@@ -1,3 +1,6 @@
-newline this has to be kept in merge conflicts.
-# Edited in task branch!
-this is new file
+ata = open('cert2.txt').read()
+	cert = TLSCertificate()
+
+	print cert.loadCertificate(data)
+
+	# print "hello world"
