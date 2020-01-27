@@ -1,4 +1,6 @@
+
 	print cert.loadCertificate(data)
+
 var express = require('express');
 var app = express();
 var es = require('../utils/es/esblog');
@@ -44,8 +46,6 @@ module.exports = function (passport) {
     var result = await es.findAndOr('blogs', body);
     res.json(result);
   });
-<<<<<<< HEAD
-=======
   app.post('/additems', async function (req, res, next) {
     console.log(req.body.item);
     var table_name = 'tbl_' + req.body.item_type;
@@ -88,7 +88,7 @@ module.exports = function (passport) {
     // }
   });
 
->>>>>>> master
+
   app.get('/getitems', async function (req, res, next) {
     try {
       var table_name = 'tbl_' + req.query.item_type;
@@ -115,8 +115,12 @@ module.exports = function (passport) {
       res.json({ message: 'Failed', error: err.message });
     }
   });
-<<<<<<< HEAD
+
   app.post('/updateitems', async function (req, res, next) {
+
+
+  app.post('/updateitems', async function (req, res, next) {
+    console.log(req.body);
 
 
   app.post('/updateitems', async function (req, res, next) {
@@ -126,19 +130,29 @@ module.exports = function (passport) {
     var id = req.body.item.id;
     delete req.body.item.id;
     var cl = {};
-   
+   Object.keys(req.body.item).map(key => {
+      cl[key] = req.body.item[key];
+    });
+    var keys = Object.keys(req.body.item);
+    var queryString = '';
+    keys.forEach((key, index, arr) => {
+
       queryString += key + " = '" + req.body.item[key] + "'";
       if (keys.length > index + 1) queryString += ' , ';
     });
     var results = ([err, data] = await dbUtils.try(`UPDATE  ${table_name} SET ${queryString} where id=${id}`, [cl]));
     if (err) {
       var err = await await database.query(res, err);
+    var err = await dbUtils.getUserReadableError(res, err);
       throw new Error(err);
     }
     if (results) {
       var boards = ([err, data] = await dbUtils.try(`select * from ${table_name}`, []));
       if (err) {
+
         var err = await dbUtils.database.query(res, err);
+       var err = await dbUtils.getUserReadableError(res, err);
+
         throw new Error(err);
       }
       res.json({ status: 'done', boards: boards[1] });
@@ -166,4 +180,3 @@ module.exports = function (passport) {
   return app;
 };
 
-	# print "hello world"
